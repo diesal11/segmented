@@ -6,29 +6,28 @@ import omit from 'rc-util/lib/omit';
 
 import MotionThumb from './MotionThumb';
 
-export type SegmentedValue = string | number;
+export type SegmentedValueDefault = string | number;
 
-export type SegmentedRawOption = SegmentedValue;
+export type SegmentedRawOption = SegmentedValueDefault;
 
-export interface SegmentedLabeledOption {
+export type SegmentedLabeledOption<V> {
   className?: string;
   disabled?: boolean;
   label: React.ReactNode;
-  value: SegmentedRawOption;
+  value: V;
   /**
    * html `title` property for label
    */
   title?: string;
 }
 
-type SegmentedOptions = (SegmentedRawOption | SegmentedLabeledOption)[];
+type SegmentedOptions<V = SegmentedRawOption> = (V | SegmentedLabeledOption<V>)[];
 
-export interface SegmentedProps
-  extends Omit<React.HTMLProps<HTMLDivElement>, 'onChange'> {
-  options: SegmentedOptions;
-  defaultValue?: SegmentedValue;
-  value?: SegmentedValue;
-  onChange?: (value: SegmentedValue) => void;
+export type SegmentedProps<V extends SegmentedValueDefault> = Omit<React.HTMLProps<HTMLDivElement>, 'onChange'> & {
+  options: SegmentedOptions<V>;
+  defaultValue?: V;
+  value?: V;
+  onChange?: (value: V) => void;
   disabled?: boolean;
   prefixCls?: string;
   direction?: 'ltr' | 'rtl';
